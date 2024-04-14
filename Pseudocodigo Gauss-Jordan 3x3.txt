@@ -1,0 +1,32 @@
+Función GaussJordan3x3(a, b, c)
+    matriz = CrearMatrizComoArray2D(a, b, c)
+
+    Para i desde 0 hasta 2 Hacer
+        pivote = matriz[i, i]
+        Si pivote es igual a 0 Entonces
+            Para j desde i+1 hasta 2 Hacer
+                Si matriz[j, i] no es igual a 0 Entonces
+                    Intercambiar las filas i y j
+                    pivote = matriz[i, i]
+                    Salir del bucle
+                FinSi
+            FinPara
+            Si no se encontró un pivote no cero Entonces
+                Retornar Nulo // El sistema no tiene solución única
+            FinSi
+        FinSi
+
+        // Normalizar la fila del pivote
+        matriz[i] = matriz[i] / pivote
+
+        // Hacer que todos los otros elementos en la columna sean 0
+        Para j desde 0 hasta 2 Hacer
+            Si i no es igual a j Entonces
+                matriz[j] = matriz[j] - matriz[i] * matriz[j, i]
+            FinSi
+        FinPara
+    FinPara
+
+    // La última columna contiene las soluciones
+    Retornar (matriz[0, 3], matriz[1, 3], matriz[2, 3])
+FinFunción

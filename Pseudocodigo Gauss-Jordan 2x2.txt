@@ -1,0 +1,31 @@
+Función GaussJordan2x2(a, b)
+    Imprimir(a)
+    Imprimir(b)
+
+    matriz = CrearMatrizComoArray2D(a, b)
+
+    Si matriz[0, 0] es igual a 0 Entonces
+        // Intercambiar filas o añadir un múltiplo de una fila a otra para corregir
+        // Esta parte debe reemplazarse con el código real para manejar el coeficiente cero
+    FinSi
+
+    // Dividir la primera fila por el coeficiente líder para obtener un 1 principal
+    matriz[0] = matriz[0] / matriz[0, 0]
+
+    // Eliminar la primera variable de la segunda fila
+    matriz[1] = matriz[1] - matriz[1, 0] * matriz[0]
+
+    Si matriz[1, 1] es igual a 0 Entonces
+        // Este sistema es dependiente o inconsistente
+        // Esta parte debe reemplazarse con el código real para manejar el coeficiente cero
+    FinSi
+
+    // Dividir la segunda fila por el coeficiente líder para obtener un 1 principal
+    matriz[1] = matriz[1] / matriz[1, 1]
+
+    // Eliminar la segunda variable de la primera fila
+    matriz[0] = matriz[0] - matriz[0, 1] * matriz[1]
+
+    // Las soluciones ahora están en la última columna
+    Retornar (matriz[0, 2], matriz[1, 2])
+FinFunción
