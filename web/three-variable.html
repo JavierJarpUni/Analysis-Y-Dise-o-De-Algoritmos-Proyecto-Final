@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Three-Variable Equation Solver</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+  form, table {
+      margin-bottom: 20px;
+  }
+  label, input, button {
+      margin-bottom: 10px;
+  }
+  label {
+      display: inline-block;
+      width: 30px;
+  }
+  table {
+      width: 100%;
+      border-collapse: collapse;
+  }
+  th, td {
+      text-align: left;
+      padding: 8px;
+      border: 1px solid #ddd;
+  }
+  th {
+      background-color: #f2f2f2;
+  }
+  </style>
+</head>
+  <body>
+  <button onclick="goBack()">Back to Main Page</button>
+  <h1>Three-Variable Equation Solver</h1>
+  <h2>ax + by + cz = d</h2>
+  <form id="three-var-form">
+
+    <h3>Primera Ecuacion</h3>
+    <label for="a">a:</label>
+    <input type="number" id="a" name="a" required><br><br>
+    <label for="b">b:</label>
+    <input type="number" id="b" name="b" required><br><br>
+    <label for="c">c:</label>
+    <input type="number" id="c" name="c" required><br><br>
+    <label for="d">d:</label>
+    <input type="number" id="d" name="d" required><br><br>
+
+    <h3>Segunda Ecuacion</h3>
+    <label for="e">a:</label>
+    <input type="number" id="e" name="e" required><br><br>
+    <label for="f">b:</label>
+    <input type="number" id="f" name="f" required><br><br>
+    <label for="g">c:</label>
+    <input type="number" id="g" name="g" required><br><br>
+    <label for="h">d:</label>
+    <input type="number" id="h" name="h" required><br><br>
+
+    <h3>Tercera Ecuacion</h3>
+    <label for="i">a:</label>
+    <input type="number" id="i" name="i" required><br><br>
+    <label for="j">b:</label>
+    <input type="number" id="j" name="j" required><br><br>
+    <label for="k">c:</label>
+    <input type="number" id="k" name="k" required><br><br>
+    <label for="l">d:</label>
+    <input type="number" id="l" name="l" required><br><br>
+
+    <button type="submit">Solve</button>
+
+  </form>
+  <button id="sort-asc-btn">Sort Ascending</button>
+  <button id="sort-desc-btn">Sort Descending</button>
+  <table id="solutions-table">
+    <!-- Table headers -->
+      <thead>
+        <tr>
+            <th>ID</th>
+            <th>Valores Coeficientes (x, y ,z)</th>
+            <th>Soluciones (x, y, z)</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  <script src="eel.js"></script>
+  <script text="text/javascript">
+
+      function goBack(){
+        window.history.back();
+      }
+
+      // This function will be called on window load to fetch and display 2x2 entries
+      window.onload = function() {
+          eel.get_entries_by_type('3x3')(display_entries);
+      };
+  
+      document.getElementById('sort-asc-btn').addEventListener('click', function() {
+          eel.sort_entries('ascending')(display_solutions);
+      });
+      
+      document.getElementById('sort-desc-btn').addEventListener('click', function() {
+          eel.sort_entries('descending')(display_solutions);
+      });
+
+      eel.expose(display_entries);
+      function display_entries(entries) {
+        const solutionsTable = document.getElementById('solutions-table').getElementsByTagName('tbody')[0];
+        solutionsTable.innerHTML = '';  // Clear previous solutions
+      
+        // Assuming each entry contains an ID, the equations, and their solutions
+        entries.forEach(function(entry, index) {
+            let row = solutionsTable.insertRow();
+            let cellId = row.insertCell(0);
+            let cellEquations = row.insertCell(1);
+            let cellSolutions = row.insertCell(2);
+            cellId.textContent = index + 1;
+            cellEquations.textContent = entry.equations.map(eq => eq.join(', ')).join(' | ');
+            cellSolutions.textContent = `x: ${entry.solutions[0]}, y: ${entry.solutions[1]}, z: ${entry.solutions[2]}`;
+        });
+      }
+
+      eel.expose(display_solutions);
+      function display_solutions(solutions) {
+        const solutionsTable = document.getElementById('solutions-table').getElementsByTagName('tbody')[0];
+        solutionsTable.innerHTML = '';  // Clear previous solutions
+
+        const variables = ['x', 'y', 'z'];
+        solutions.forEach(function(solution, index) {
+            let row = solutionsTable.insertRow();
+            let cellId = row.insertCell(0);
+            let cellVariable = row.insertCell(0);
+            let cellValue = row.insertCell(1);
+            cellId.textContent = index + 1;
+            cellVariable.textContent = variables[index];
+            cellValue.textContent = solution;
+        });
+
+        eel.get_entries_by_type('3x3')(display_entries);
+      }
+
+      // Function to handle the form submission and solve the three-variable system
+      document.getElementById('three-var-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Retrieve the values from the form
+        const eq1 = [
+          parseFloat(document.getElementById('a').value),
+          parseFloat(document.getElementById('b').value),
+          parseFloat(document.getElementById('c').value),
+          parseFloat(document.getElementById('d').value)
+        ];
+
+        const eq2 = [
+          parseFloat(document.getElementById('e').value),
+          parseFloat(document.getElementById('f').value),
+          parseFloat(document.getElementById('g').value),
+          parseFloat(document.getElementById('h').value)
+        ];
+
+        const eq3 = [
+          parseFloat(document.getElementById('i').value),
+          parseFloat(document.getElementById('j').value),
+          parseFloat(document.getElementById('k').value),
+          parseFloat(document.getElementById('l').value)
+        ];
+
+        // Call the Eel function to solve the system
+        eel.solve_three_variable_system(eq1, eq2, eq3)(display_solutions);
+    });
+  </script>
+</body>
+</html>

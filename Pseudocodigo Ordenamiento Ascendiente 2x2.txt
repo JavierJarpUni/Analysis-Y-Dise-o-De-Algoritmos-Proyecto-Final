@@ -1,0 +1,21 @@
+FUNCTION calculate_magnitude(x, y)
+    RETURN SQRT(x^2 + y^2)
+END FUNCTION
+
+FUNCTION sort_entries_ascending(entries)
+    entries_list = CONVERT entries TO LIST
+
+    FUNCTION sort_key(entry)
+        x, y = entry's solutions
+        RETURN calculate_magnitude(x, y)
+    END FUNCTION
+
+    SORT entries_list BASED ON sort_key
+
+    sorted_entries = EMPTY DICTIONARY
+    FOR each entry IN entries_list
+        sorted_entries[entry's ID] = entry's data
+    END FOR
+
+    RETURN sorted_entries
+END FUNCTION

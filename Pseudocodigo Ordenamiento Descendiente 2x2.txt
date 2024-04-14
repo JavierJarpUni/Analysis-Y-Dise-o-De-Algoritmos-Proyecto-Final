@@ -1,0 +1,12 @@
+FUNCTION sort_entries_descending(entries)
+    entries_list = CONVERT entries TO LIST
+
+    SORT entries_list BASED ON calculate_magnitude(entry's solutions) IN REVERSE ORDER
+
+    sorted_entries = EMPTY DICTIONARY
+    FOR each entry IN entries_list
+        sorted_entries[entry's ID] = entry's data
+    END FOR
+
+    RETURN sorted_entries
+END FUNCTION

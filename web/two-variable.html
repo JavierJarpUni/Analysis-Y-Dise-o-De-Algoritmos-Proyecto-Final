@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Two-Variable Equation Solver</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    form, table {
+        margin-bottom: 20px;
+    }
+    label, input, button {
+        margin-bottom: 10px;
+    }
+    label {
+        display: inline-block;
+        width: 30px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        text-align: left;
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+    <button onclick="goBack()">Back to Main Page</button>
+  <h1>Two-Variable Equation Solver</h1>
+  <h2>ax + by = c</h2>
+  <form id="two-var-form">
+    <h3>Primera Ecuacion</h3>
+    <label for="a">a:</label>
+    <input type="number" id="a" name="a" required><br><br>
+    <label for="b">b:</label>
+    <input type="number" id="b" name="b" required><br><br>
+    <label for="c">c:</label>
+    <input type="number" id="c" name="c" required><br><br>
+    <h3>Segunda Ecuacion</h3>
+    <label for="d">a:</label>
+    <input type="number" id="d" name="d" required><br><br>
+    <label for="e">b:</label>
+    <input type="number" id="e" name="e" required><br><br>
+    <label for="f">c:</label>
+    <input type="number" id="f" name="f" required><br><br>
+    <button type="submit">Solve</button>
+  </form>
+    <button id="sort-asc-btn">Sort Ascending</button>
+    <button id="sort-desc-btn">Sort Descending</button>
+  <table id="solutions-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Variables</th>
+            <th>Valores Coeficientes (x, y)</th>
+            <th>Soluciones (x, y)</th>
+        </tr>
+    </thead>
+    <tbody>
+      <!-- Solutions will be added here -->
+    </tbody>
+  </table>
+  <script src="/eel.js"></script>
+  <script text="text/javascript">
+    function goBack() {
+      window.history.back();
+    }
+
+    window.onload = function() {
+      eel.get_entries_by_type('2x2')(display_entries);  // Fetch and display 2x2 entries
+    };
+
+    document.getElementById('sort-asc-btn').addEventListener('click', function() {
+      eel.sort_entries('ascending')(display_entries);
+    });
+
+    document.getElementById('sort-desc-btn').addEventListener('click', function() {
+      eel.sort_entries('descending')(display_entries);
+    });
+
+    eel.expose(display_entries);
+    function display_entries(entries) {
+      const solutionsTable = document.getElementById('solutions-table').getElementsByTagName('tbody')[0];
+      solutionsTable.innerHTML = '';  // Clear existing table
+      entries.forEach(function(entry, index) {
+        addEntryToTable(entry, index + 1);
+      });
+    }
+
+    function addEntryToTable(entry, index) {
+      const solutionsTable = document.getElementById('solutions-table').getElementsByTagName('tbody')[0];
+      const row = solutionsTable.insertRow();
+      const cellId = row.insertCell(0);
+      const cellType = row.insertCell(1);
+      const cellEquations = row.insertCell(2);
+      const cellSolutions = row.insertCell(3);
+      cellId.textContent = index;
+      cellType.textContent = entry.type;
+      cellEquations.textContent = JSON.stringify(entry.equations);
+      cellSolutions.textContent = JSON.stringify(entry.solutions);
+    }
+
+    eel.expose(display_solutions);
+    function display_solutions(solutions) {
+      console.log(solutions);  // Debugging to see what solutions are received
+      display_entries([{
+        type: '2x2',
+        equations: [/* equations used */],
+        solutions: solutions
+      }]);  // Mocking entry structure for update
+    }
+
+    document.getElementById('two-var-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const a1 = parseFloat(document.getElementById('a').value);
+      const b1 = parseFloat(document.getElementById('b').value);
+      const c1 = parseFloat(document.getElementById('c').value);
+      const a2 = parseFloat(document.getElementById('d').value);
+      const b2 = parseFloat(document.getElementById('e').value);
+      const c2 = parseFloat(document.getElementById('f').value);
+
+      // Call the Eel function to solve the system
+      eel.solve_two_variable_system([a1, b1, c1], [a2, b2, c2])(display_solutions);
+    });
+  </script>
+</body>
+</html>

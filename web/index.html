@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Resolver Ecuaciones De Dos O Tres Variables</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .navigation-button {
+        padding: 10px 20px;
+        margin: 10px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Resolver Ecuaciones De Dos O Tres Variables</h1>
+    <h2>Por Javier Jarp</h2>
+    <h3>Matricula: 23-0466</h3>
+    <button class="navigation-button" id="two-variable-page-btn">Resolver Ecuaciones De Dos Variables</button>
+    <button class="navigation-button" id="three-variable-page-btn">Resolver Ecuaciones De Tres Variables</button>
+  </body>
+  <script src="eel.js"></script>
+  <script text="text/javascript">
+    document.getElementById('two-variable-page-btn').addEventListener('click', function() {
+        eel.show_page('two-variable.html');
+    });
+    
+    document.getElementById('three-variable-page-btn').addEventListener('click', function() {
+        eel.show_page('three-variable.html');
+    });
+  </script>
+</html>
